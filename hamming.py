@@ -65,7 +65,7 @@ def encoder(fourBitWord):
 
 #randomly introduces error into encoded bits.
 def bsc(encodedMessage, Pc):
-    encMsgWithErrors = encodedMessage
+    encMsgWithErrors = encodedMessage[:]
     for i in range(0,7):
         if random() < Pc:
             toggle(encMsgWithErrors,i)
@@ -76,7 +76,7 @@ def bsc(encodedMessage, Pc):
 
 #decodes hamming code
 def decoder(encodedMessage):
-    encMsg = encodedMessage
+    encMsg = encodedMessage[:]
     Syndrome = []
     Syndrome.append(calculateParity(encMsg[3], encMsg[4], encMsg[5], encMsg[6]))
     Syndrome.append(calculateParity(encMsg[1], encMsg[2], encMsg[5], encMsg[6]))
@@ -116,11 +116,6 @@ def decoder(encodedMessage):
         # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
         return encMsg
 
-def timedOutput():
-    for i in range(0,7):
-        if encodedWord[i] != decodedWord[i]:
-            print('error detected')
-
 PcRange = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 errate = []
 for Pc in PcRange:
@@ -135,28 +130,24 @@ for Pc in PcRange:
         decodedWord = decoder(errEncWord)
         # decodedWord = [1,1,1,0,1,1,1]
         for i in range(0,7):
-            if encodedWord[i] != errEncWord[i]:
-                #print('error detected')
+            if encodedWord[i] != decodedWord[i]:
                 ecount += 1
                 break
         if ecount > 1000:
             errate.append(ecount/wcount)
             break
+print(errate)
 
-
-
-# print(errate)
-# Pc = [0.1,0.09,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.01]
-# # Pc = [0.5, 0.4, 0.3, 0.2, 0.1]
-# theober = [((1-pc)**7)+(7*pc)*((1-pc)**6) for pc in Pc]
-# expber = errate
-# plt.semilogy(Pc,theober,label="Theoretical")
-# plt.semilogy(Pc,expber,label="Experimental")
-# plt.semilogy(Pc,Pc,label="No code")
-# plt.legend(loc='upper right')
-# plt.gca().invert_xaxis()
-# plt.xlabel("Pc")
-# plt.ylabel("BER")
-# plt.grid()
-# plt.savefig('ber_hamming.png')
-# plt.close()
+Pc = [0.1,0.09,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.01]
+theober = [((1-pc)**7)+(7*pc)*((1-pc)**6) for pc in Pc]
+expber = errate
+plt.semilogy(Pc,theober,label="Theoretical")
+plt.semilogy(Pc,expber,label="Experimental")
+plt.semilogy(Pc,Pc,label="No code")
+plt.legend(loc='upper right')
+plt.gca().invert_xaxis()
+plt.xlabel("Pc")
+plt.ylabel("BER")
+plt.grid()
+plt.savefig('ber_hamming.png')
+plt.close()
