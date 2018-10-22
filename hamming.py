@@ -86,35 +86,36 @@ def decoder(encodedMessage):
         SyndromeString += str(bit)
     SyndromeDecimal = int(SyndromeString, 2)
     if SyndromeDecimal == 0:
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 1:
         toggle(encMsg, 0)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 2:
         toggle(encMsg, 1)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 3:
         toggle(encMsg, 2)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 4:
         toggle(encMsg, 3)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 5:
         toggle(encMsg, 4)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 6:
         toggle(encMsg, 5)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
     if SyndromeDecimal == 7:
         toggle(encMsg, 6)
-        # decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
-        return encMsg
+        decMsg = [encMsg[2],encMsg[4],encMsg[5],encMsg[6]]
+        return decMsg
 
 PcRange = [0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1]
 errate = []
@@ -125,12 +126,10 @@ for Pc in PcRange:
         wcount += 1
         word = createRandomMessage()
         encodedWord = encoder(word)
-        # encodedWord = [1,1,1,1,1,1,1]
         errEncWord = bsc(encodedWord, Pc)
         decodedWord = decoder(errEncWord)
-        # decodedWord = [1,1,1,0,1,1,1]
-        for i in range(0,7):
-            if encodedWord[i] != decodedWord[i]:
+        for i in range(0,4):
+            if word[i] != decodedWord[i]:
                 ecount += 1
                 break
         if ecount > 1000:
