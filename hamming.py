@@ -71,9 +71,6 @@ def bsc(encodedMessage, Pc):
             toggle(encMsgWithErrors,i)
     return encMsgWithErrors
 
-# def decoder(encodedMessage):
-# return[encodedMessage[2],encodedMessage[4],encodedMessage[5],encodedMessage[6]]
-
 #decodes hamming code
 def decoder(encodedMessage):
     encMsg = encodedMessage[:]
@@ -131,14 +128,17 @@ for Pc in PcRange:
         for i in range(0,4):
             if word[i] != decodedWord[i]:
                 ecount += 1
-                break
+                # break
         if ecount > 1000:
+            print(ecount)
+            print(wcount)
             errate.append(ecount/wcount)
             break
 print(errate)
 
-Pc = [0.1,0.09,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.01]
-theober = [((1-pc)**7)+(7*pc)*((1-pc)**6) for pc in Pc]
+#Pc = [0.1,0.09,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.01]
+Pc = [0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1]
+theober = [(21*(pc**2)*((1-pc)**5)) for pc in Pc]
 expber = errate
 plt.semilogy(Pc,theober,label="Theoretical")
 plt.semilogy(Pc,expber,label="Experimental")
